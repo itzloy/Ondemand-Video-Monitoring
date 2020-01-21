@@ -6,7 +6,7 @@ var fs = require('fs')
 
 
 var video_URL = "http://mirrors.standaloneinstaller.com/video-sample/jellyfish-25-mbps-hd-hevc.mp4";
-var video_playtime = 30000;
+var video_playtime = 40000;
 
 connect().use(serveStatic(__dirname)).listen(8080, function(){
     console.log('Server running on 8080...');
@@ -33,15 +33,21 @@ async function run() {
   const browser = await puppeteer.launch({args: ['--no-sandbox','--no-user-gesture-required','--incognito'], executablePath: '/usr/bin/google-chrome'});
   const page = await browser.newPage();
     
-    console.log("Load the video URL");
+    console.log("Load video URL in browser");
     await page.goto('http://127.0.0.1:8080');
+    await page.waitForSelector('#my-video');
+
     console.log("Capture first screenshot");
     await page.screenshot({path: 'Step1_A.png'});
-    await page.waitFor(60000);
+
+    console.log("wait for the video to play for "+ video_playtime +" ms");
+    await page.waitFor(video_playtime);
+    await page.click('#my-video');
+
     console.log("Capture second screenshot");
     await page.screenshot({path: 'Step1_B.png'});
     
-    console.log("Capture Cookies");
+    console.log("Gather all Cookies");
     var allCookies = await page.cookies();
 
     var metrics = ['VideoAnalyticsViewTime', 'VideoAnalyticsBufferingCounter', 'VideoAnalyticsBufferingTime'];
