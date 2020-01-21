@@ -4,9 +4,15 @@ var serveStatic = require('serve-static');
 var puppeteer = require('puppeteer');
 var fs = require('fs')
 
-
+// Accept video URL and video play time from user
 var video_URL = "http://mirrors.standaloneinstaller.com/video-sample/jellyfish-25-mbps-hd-hevc.mp4";
-var video_playtime = 40000;
+var video_playtime = 50000;
+
+// Check for playtime to be less than 90000
+if(video_playtime>90000 || video_playtime<30000){
+    console.log('video view time should be between 45000 ms to 90000 ms.');
+    process.exit();
+}
 
 connect().use(serveStatic(__dirname)).listen(8080, function(){
     console.log('Server running on 8080...');
@@ -53,6 +59,13 @@ async function run() {
     var metrics = ['VideoAnalyticsViewTime', 'VideoAnalyticsBufferingCounter', 'VideoAnalyticsBufferingTime'];
 
     for(var i=0; i<metrics.length; i++){
+      // Check if metrics were captured. 
+      if(allCookies.length==0){
+        console.log("Metrics were not captured.");
+        break;
+      }
+      
+      // Print all the metrics.
       for (var j=0; j<allCookies.length; j++) {
         if(metrics[i]==allCookies[j].name){
           console.log(metrics[i]+": "+allCookies[j].value);
@@ -65,12 +78,11 @@ async function run() {
       console.log("i: "+i);
     }
 
+    // Print all cookies.
     console.log("allCookies values:"+JSON.stringify(allCookies))
-
     await page.waitFor(1000);
 
     await browser.close();
-
     process.exit();
 
 }
