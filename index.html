@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Video Stream</title>
+      <link href="https://vjs.zencdn.net/7.6.5/video-js.css" rel="stylesheet">
+    <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
+    <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+    <script src="captureData.js"></script>
+    <!---
+    <script type="text/javascript">
+      window.onload = function() {
+        document.getElementsByTagName("video")[0].addEventListener('loadeddata', trackVideo(document.getElementById('my-video_html5_api'), __videoanalytics_def_options ));
+      };
+    </script>
+  -->
+  </head>
+  <body>
+    <p>videojs</p>
+    <video id='my-video' class='video-js' controls muted autoplay preload='auto' data-setup='{}' onloadeddata="trackVideo(document.getElementById('my-video_html5_api'), __videoanalytics_def_options )">
+      <source id='video_url' src='http://mirrors.standaloneinstaller.com/video-sample/jellyfish-25-mbps-hd-hevc.mp4' type='video/mp4'>
+      <p class='vjs-no-js'>
+        To view this video please enable JavaScript, and consider upgrading to a web browser that
+        <a href='https://videojs.com/html5-video-support/' target='_blank'>supports HTML5 video</a>
+      </p>
+    </video>
+    <script type="text/javascript">
+
+      window.onload = function() {
+        //alert('Page loaded');
+        //document.getElementsByTagName("video")[0].addEventListener('loadeddata', trackVideo(document.getElementById('my-video_html5_api'), __videoanalytics_def_options ));
+      };
+
+      document.addEventListener('DOMContentLoaded', function() {
+         //document.getElementsByTagName("video")[0].addEventListener('loadeddata', trackVideo(document.getElementById('my-video_html5_api'), __videoanalytics_def_options ));
+      }, false);
+
+    </script>
+    <script src='https://vjs.zencdn.net/7.6.5/video.js'></script>
+  </body>
+</html>
