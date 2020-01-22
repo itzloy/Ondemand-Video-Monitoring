@@ -5,12 +5,20 @@ var puppeteer = require('puppeteer');
 var fs = require('fs')
 
 // Accept video URL and video play time from user
-var video_URL = "http://mirrors.standaloneinstaller.com/video-sample/jellyfish-25-mbps-hd-hevc.mp4";
-var video_playtime = 50000;
+var video_URL = "http://mirrors.standaloneinstaller.com/video-sample/video-sample.m4v";
+var video_playtime = 45000;
 
 // Check for playtime to be less than 90000
 if(video_playtime>90000 || video_playtime<30000){
     console.log('video view time should be between 45000 ms to 90000 ms.');
+    process.exit();
+}
+
+// Check if the video type is supported.
+var video_format = video_URL.match(/(?!.*\.)(.*)/g);
+if(video_format[0]!='mp4' && video_format[0]!='webm' && video_format[0]!='m4v' && video_format[0]!='mkv' && video_format[0]!='mov'){
+    console.log("video format:"+video_format[0])
+    console.log("PLease use one of the supported video formats [mp4, webm, m4v, mkv and mov]");
     process.exit();
 }
 
@@ -49,6 +57,7 @@ async function run() {
     console.log("wait for the video to play for "+ video_playtime +" ms");
     await page.waitFor(video_playtime);
     await page.click('#my-video');
+    await page.waitFor(500);
 
     console.log("Capture second screenshot");
     await page.screenshot({path: 'Step1_B.png'});
