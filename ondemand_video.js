@@ -6,7 +6,7 @@ var fs = require('fs')
 
 // Accept video URL and video play time from user
 var video_URL = "http://mirrors.standaloneinstaller.com/video-sample/video-sample.m4v";
-var video_playtime = 60000;
+var video_playtime = 30000;
 
 // Check for playtime to be less than 90000
 if(video_playtime>90000 || video_playtime<30000){
@@ -65,7 +65,7 @@ async function run() {
     console.log("Gather all Cookies");
     var allCookies = await page.cookies();
 
-    var metrics = ['VideoAnalyticsViewTime', 'VideoAnalyticsBufferingCounter', 'VideoAnalyticsBufferingTime'];
+    var metrics = ['VideoAnalyticsViewTime', 'VideoAnalyticsBufferingCounter', 'VideoAnalyticsBufferingTime', 'VideoAnalyticsDecodedFrameCount', 'VideoAnalyticsDroppedFrameCount'];
 
     for(var i=0; i<metrics.length; i++){
       // Check if metrics were captured. 

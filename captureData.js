@@ -224,8 +224,10 @@ function onPlaying(evt) {
 // Time position updated
 function onTimeUpdate(evt) {
         __putCookieData("ViewTime", Math.round(__videoanalyticsobj.lastpos));
-	//__putCookieData("BufferingCounter", __videoanalyticsobj.buffering_count);
-	//__putCookieData("BufferingTime", __videoanalyticsobj.buffering_time);
+	__videoanalyticsobj.Decoded_frame_count = document.getElementsByTagName("video")[0].webkitDecodedFrameCount;
+	__videoanalyticsobj.Dropped_frame_count = document.getElementsByTagName("video")[0].webkitDroppedFrameCount;
+	__putCookieData("DecodedFrameCount", __videoanalyticsobj.Decoded_frame_count);
+	__putCookieData("DroppedFrameCount", __videoanalyticsobj.Dropped_frame_count);
 	
 	__analyticsLog("HTML5 timeupdate event " + __videoanalyticsobj.vp.currentTime);
 	// Remember last position
@@ -293,6 +295,8 @@ function __flushStatistics() {
 	__putCookieData("ViewTime", "");
 	__putCookieData("BufferingCounter", "");
 	__putCookieData("BufferingTime", "");
+	__putCookieData("DecodedFrameCount", "");
+	__putCookieData("DroppedFrameCount", "");
 }
 
 function __putCookieData(key, value) {
