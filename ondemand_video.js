@@ -6,7 +6,7 @@ var fs = require('fs')
 
 // Accept video URL and video play time from user
 var video_URL = "http://mirrors.standaloneinstaller.com/video-sample/video-sample.m4v";
-var video_playtime = 45000;
+var video_playtime = 60000;
 
 // Check for playtime to be less than 90000
 if(video_playtime>90000 || video_playtime<30000){
@@ -43,13 +43,13 @@ fs.readFile("index.html", 'utf8', function (err,data) {
 
 
 async function run() {
-  //const browser = await puppeteer.launch({args: ['--no-sandbox']});
-  const browser = await puppeteer.launch({args: ['--no-sandbox','--no-user-gesture-required','--incognito'], executablePath: '/usr/bin/google-chrome'});
-  const page = await browser.newPage();
+    //const browser = await puppeteer.launch({args: ['--no-sandbox']});
+    const browser = await puppeteer.launch({args: ['--no-sandbox','--no-user-gesture-required','--incognito'], executablePath: '/usr/bin/google-chrome'});
+    const page = await browser.newPage();
     
     console.log("Load video URL in browser");
     await page.goto('http://127.0.0.1:8080');
-    await page.waitForSelector('#my-video');
+    await page.waitForSelector('#playStart');
 
     console.log("Capture first screenshot");
     await page.screenshot({path: 'Step1_A.png'});
@@ -84,7 +84,6 @@ async function run() {
           console.log(metrics[i]+": 0");
         }
       }
-      console.log("i: "+i);
     }
 
     // Print all cookies.

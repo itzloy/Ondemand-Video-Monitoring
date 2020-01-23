@@ -166,6 +166,9 @@ function onLoadStart(evt) {
 
 // Video can be played
 function onCanPlay(evt) {
+	// mark the start of the video.
+	document.getElementsByTagName("body")[0].setAttribute("id", "playStart");
+
 	__analyticsLog("HTML5 canplay event");
 	__initializeVideoAnalytics();
 
@@ -201,7 +204,16 @@ function onPlaying(evt) {
 		__videoanalyticsobj.buffering_time += buf_delay/1000;
 		__analyticsLog("Video buffering finished: counter="+__videoanalyticsobj.buffering_count+" total delay="+__videoanalyticsobj.buffering_time);
 		__putCookieData("BufferingCounter", __videoanalyticsobj.buffering_count);
-		__putCookieData("BufferingTime", Math.round(__videoanalyticsobj.buffering_time));
+		__putCookieData("BufferingTime", __videoanalyticsobj.buffering_time);
+
+		// print cookie values
+		//var node = document.createElement("div");        
+		//var textnode = document.createTextNode(__videoanalyticsobj.buffering_time);   
+		//node.appendChild(textnode);                          
+		//document.getElementById("printValues").appendChild(node);
+
+
+
 	} else if (__videoanalyticsobj.watch_trigger != true) {
 		// track watch event
 		__trackData("Video Metrics", "Watch "+__videoanalyticsobj.options.ContentCategory, __videoanalyticsobj.options.ContentName, 1);
@@ -211,6 +223,10 @@ function onPlaying(evt) {
 
 // Time position updated
 function onTimeUpdate(evt) {
+        __putCookieData("ViewTime", Math.round(__videoanalyticsobj.lastpos));
+	//__putCookieData("BufferingCounter", __videoanalyticsobj.buffering_count);
+	//__putCookieData("BufferingTime", __videoanalyticsobj.buffering_time);
+	
 	__analyticsLog("HTML5 timeupdate event " + __videoanalyticsobj.vp.currentTime);
 	// Remember last position
 	__videoanalyticsobj.lastpos = __videoanalyticsobj.vp.currentTime;
