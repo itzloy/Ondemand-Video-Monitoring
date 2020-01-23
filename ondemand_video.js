@@ -5,12 +5,16 @@ var puppeteer = require('puppeteer');
 var fs = require('fs')
 
 // Accept video URL and video play time from user
-var video_URL = "http://mirrors.standaloneinstaller.com/video-sample/video-sample.m4v";
-var video_playtime = 30000;
+//var video_URL = "http://mirrors.standaloneinstaller.com/video-sample/video-sample.m4v";
+//var video_playtime = 30000;
 
-// Check for playtime to be less than 90000
+var video_URL = process.env.CP_UNSAFE_VAR_Video_URL;
+var video_playtime = process.env.CP_UNSAFE_VAR_Video_Playtime;
+
+// Check for playtime to be less than 30000
 if(video_playtime>90000 || video_playtime<30000){
     console.log('video view time should be between 45000 ms to 90000 ms.');
+    console.log("Availability: 0");
     process.exit();
 }
 
@@ -18,7 +22,8 @@ if(video_playtime>90000 || video_playtime<30000){
 var video_format = video_URL.match(/(?!.*\.)(.*)/g);
 if(video_format[0]!='mp4' && video_format[0]!='webm' && video_format[0]!='m4v' && video_format[0]!='mkv' && video_format[0]!='mov'){
     console.log("video format:"+video_format[0])
-    console.log("PLease use one of the supported video formats [mp4, webm, m4v, mkv and mov]");
+    console.log("Please use one of the supported video formats [mp4, webm, m4v, mkv and mov]");
+    console.log("Availability: 0");
     process.exit();
 }
 
@@ -85,6 +90,8 @@ async function run() {
         }
       }
     }
+
+    console.log("Availability: 1");
 
     // Print all cookies.
     console.log("allCookies values:"+JSON.stringify(allCookies))
