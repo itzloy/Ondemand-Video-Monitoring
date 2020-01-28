@@ -162,6 +162,9 @@ function onLoadedData(evt) {
 function onLoadStart(evt) {
 	__analyticsLog("HTML5 loadstart event");
 	__videoanalyticsobj.lstime = new Date();
+
+	var dnsStart = Performance.getEntries();
+	 __putCookieData("ViewTime", dnsStart);
 }
 
 // Video can be played

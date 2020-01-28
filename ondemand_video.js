@@ -5,9 +5,6 @@ var puppeteer = require('puppeteer');
 var fs = require('fs')
 
 // Accept video URL and video play time from user
-//var video_URL = "http://mirrors.standaloneinstaller.com/video-sample/video-sample.m4v";
-//var video_playtime = 30000;
-
 var video_URL = process.env.CP_UNSAFE_VAR_Video_URL;
 var video_playtime = process.env.CP_UNSAFE_VAR_Video_Playtime;
 
@@ -21,29 +18,33 @@ if(video_playtime>90000 || video_playtime<30000){
 // Check if the video type is supported.
 var video_format = video_URL.match(/(?!.*\.)(.*)/g);
 if(video_format[0]!='mp4' && video_format[0]!='webm' && video_format[0]!='m4v' && video_format[0]!='mkv' && video_format[0]!='mov'){
-    console.log("video format:"+video_format[0])
+    console.log("video format:"+video_format[0]);
     console.log("Please use one of the supported video formats [mp4, webm, m4v, mkv and mov]");
     console.log("Availability: 0");
     process.exit();
 }
 
-connect().use(serveStatic(__dirname)).listen(8080, function(){
-    console.log('Server running on 8080...');
-});
-
-
-fs.readFile("index.html", 'utf8', function (err,data) {
+// Add the video URL in the index.html file.
+fs.readFile("/opt/3genlabs/hawk/syntheticnode/service/shellmonitor/sandbox/index.html", 'utf8', function (err,data) {
   if (err) {
+    console.log("Availability: 0");
     return console.log(err);
   }
 
   console.log("Set video link to HTML file");
   var result = data.replace(/id='video_url'(\s)+src='.*?'/g, "id='video_url' src='"+video_URL+"'");
-  //console.log("result:"+result);  
 
-  fs.writeFile("index.html", result, 'utf8', function (err) {
-     if (err) return console.log(err);
+  fs.writeFile("/opt/3genlabs/hawk/syntheticnode/service/shellmonitor/sandbox/index.html", result, 'utf8', function (err) {
+     if (err){
+         console.log("Availability: 0");
+         return console.log(err);
+     }
   });
+});
+
+// launch a local server
+connect().use(serveStatic(__dirname)).listen(8080, function(){
+    console.log('Server running on 8080...');
 });
 
 
@@ -60,7 +61,7 @@ async function run() {
     await page.screenshot({path: 'Step1_A.png'});
 
     console.log("wait for the video to play for "+ video_playtime +" ms");
-    await page.waitFor(video_playtime);
+    await new Promise(r => setTimeout(r, video_playtime));
     await page.click('#my-video');
     await page.waitFor(500);
 
