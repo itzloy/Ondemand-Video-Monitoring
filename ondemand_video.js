@@ -10,7 +10,7 @@ var video_playtime = process.env.CP_UNSAFE_VAR_Video_Playtime;
 
 // Check for playtime to be less than 30000
 if(video_playtime>90000 || video_playtime<30000){
-    console.log('video view time should be between 45000 ms to 90000 ms.');
+    console.log('video view time should be between 30000 ms to 90000 ms.');
     console.log("Availability: 0");
     process.exit();
 }
