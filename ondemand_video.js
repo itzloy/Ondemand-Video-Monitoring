@@ -8,7 +8,15 @@ var fs = require('fs')
 var video_URL = process.env.CP_UNSAFE_VAR_Video_URL;
 var video_playtime = process.env.CP_UNSAFE_VAR_Video_Playtime;
 
-// Check for playtime to be less than 30000
+if(video_URL==null || video_URL=="" || video_playtime==null || video_playtime==""){
+    console.log("The video URL or video playtime should not be empty.");
+    console.log("Availability: 0");
+    //process.exit();
+    video_URL = "http://mirrors.standaloneinstaller.com/video-sample/jellyfish-25-mbps-hd-hevc.mp4";
+    video_playtime = "45000";
+}
+
+// Check for playtime to be between 30000 ms to 90000 ms.
 if(video_playtime>90000 || video_playtime<30000){
     console.log('video view time should be between 30000 ms to 90000 ms.');
     console.log("Availability: 0");
@@ -58,7 +66,7 @@ async function run() {
     await page.waitForSelector('#playStart');
 
     console.log("Capture first screenshot");
-    await page.screenshot({path: 'Step1_A.png'});
+    await page.screenshot({path: '/opt/3genlabs/hawk/syntheticnode/service/shellmonitor/sandbox/Step1_A.png'});
 
     console.log("wait for the video to play for "+ video_playtime +" ms");
     await new Promise(r => setTimeout(r, video_playtime));
@@ -66,7 +74,7 @@ async function run() {
     await page.waitFor(500);
 
     console.log("Capture second screenshot");
-    await page.screenshot({path: 'Step1_B.png'});
+    await page.screenshot({path: '/opt/3genlabs/hawk/syntheticnode/service/shellmonitor/sandbox/Step1_B.png'});
     
     console.log("Gather all Cookies");
     var allCookies = await page.cookies();
